@@ -5,16 +5,19 @@
 #include <sokol_gfx.h>
 #include <sokol_glue.h>
 
-#include "simple.glsl.h"
+#include <dbgui/dbgui.h>
+
+#include <simple.glsl.h>
 
 static struct {
-  sg_pipeline pip{};
-  sg_bindings bind{};
-  sg_pass_action pass_action{};
+  sg_pipeline pip;
+  sg_bindings bind;
+  sg_pass_action pass_action;
 } state;
 
 void init() {
   sg_setup({.context = sapp_sgcontext()});
+  __dbgui_setup(sapp_sample_count());
 
   float vertices[] = {// positions        //colors
                       0.0f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -43,16 +46,21 @@ void frame() {
   sg_apply_pipeline(state.pip);
   sg_apply_bindings(&state.bind);
   sg_draw(0, 3, 1);
+  __dbgui_draw();
   sg_end_pass();
   sg_commit();
 }
 
-void cleanup() { sg_shutdown(); }
+void cleanup() {
+  __dbgui_shutdown();
+  sg_shutdown();
+}
 
-void event_cb(const sapp_event *ev) {
+void event(const sapp_event *ev) {
   if (ev->type == SAPP_EVENTTYPE_MOUSE_MOVE) {
     printf("mouse: %.2f, %.2f\n", ev->mouse_x, ev->mouse_y);
   }
+  __dbgui_event(ev);
 }
 
 sapp_desc sokol_main(int argc, char *argv[]) {
@@ -64,7 +72,7 @@ sapp_desc sokol_main(int argc, char *argv[]) {
   return {.init_cb = init,
           .frame_cb = frame,
           .cleanup_cb = cleanup,
-          .event_cb = event_cb,
+          .event_cb = event,
           .width = 400,
           .height = 300,
           .window_title = "Test",
