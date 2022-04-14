@@ -1,15 +1,15 @@
-#include <stdio.h>
-
 #include <sokol_app.h>
 #include <sokol_args.h>
 #include <sokol_gfx.h>
 #include <sokol_glue.h>
 
+#include <stdio.h>
+
 sg_pass_action pass_action = {};
 
 void init() {
   sg_setup({.context = sapp_sgcontext()});
-  pass_action.colors[0] = {.action = {SG_ACTION_CLEAR},
+  pass_action.colors[0] = {.action = SG_ACTION_CLEAR,
                            .value = {1.0f, 0.0f, 0.0f, 1.0f}};
 }
 
