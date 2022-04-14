@@ -4,5 +4,6 @@ add_definitions(-D${sokol_backend})
 # test app definition
 fips_begin_app(sapp windowed)
     fips_files(main.cpp)
+    sokol_shader(simple.glsl ${slang})
     fips_deps(sokol)
 fips_end_app()
