@@ -1,0 +1,7 @@
+#
+# minimal-sokol-fips-app
+#
+---
+imports:
+  sokol:
+    git: https://github.com/floooh/sokol
